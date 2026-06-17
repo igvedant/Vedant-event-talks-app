@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isFetching = false;
     let selectedUpdateData = null;
+    let currentReleasesData = null; // Store releases locally for CSV exports
 
     // Toast Utility Function
     function showToast(message, type = 'success') {
@@ -131,12 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`/api/releases${forceRefresh ? '?refresh=true' : ''}`);
-            const result = await response.json();
-            
-            if (result.success) {
-                renderTimeline(result.data);
-                updateMetrics(result.data);
+             const response = await fetch(`/api/releases${forceRefresh ? '?refresh=true' : ''}`);
+             const result = await response.json();
+             
+             if (result.success) {
+                 currentReleasesData = result.data; // Store releases globally for CSV exports
+                 renderTimeline(result.data);
+                 updateMetrics(result.data);
                 
                 if (forceRefresh) {
                     if (result.source === 'network') {
@@ -247,6 +249,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                             </svg>
                         </button>
+                        <button class="btn-icon btn-copy-content" title="Copy update text to clipboard" data-snippet="${encodeURIComponent(up.snippet)}" data-date="${release.date}" data-type="${up.type}">
+                            <!-- Copy Content Document Icon -->
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
                         <button class="btn-tweet" data-date="${release.date}" data-type="${up.type}" data-snippet="${encodeURIComponent(up.snippet)}" data-link="${release.link}">
                             <!-- X Icon -->
                             <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -272,6 +281,18 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', (e) => {
                 const link = btn.getAttribute('data-link');
                 copyToClipboard(link, 'Release link copied to clipboard!');
+            });
+        });
+
+        // Copy Update Content click handler
+        document.querySelectorAll('.btn-copy-content').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const date = btn.getAttribute('data-date');
+                const type = btn.getAttribute('data-type');
+                const snippet = decodeURIComponent(btn.getAttribute('data-snippet'));
+                
+                const text = `BigQuery Release (${date}) - ${type}: ${snippet}`;
+                copyToClipboard(text, 'Update text copied to clipboard!');
             });
         });
 
@@ -347,7 +368,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // CSV Exporter Utility Function
+    function exportToCSV(releases) {
+        let csvContent = "Date,Link,Update Type,Update Content Snippet\n";
+        
+        releases.forEach(rel => {
+            rel.updates.forEach(up => {
+                const cleanDate = rel.date.replace(/"/g, '""');
+                const cleanLink = rel.link.replace(/"/g, '""');
+                const cleanType = up.type.replace(/"/g, '""');
+                const cleanSnippet = up.snippet.replace(/"/g, '""');
+                
+                csvContent += `"${cleanDate}","${cleanLink}","${cleanType}","${cleanSnippet}"\n`;
+            });
+        });
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `bigquery_releases_${new Date().toISOString().slice(0, 10)}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Successfully exported releases to CSV!');
+    }
+
     // Event listeners
+    const btnExportCSV = document.getElementById('btn-export-csv');
+    if (btnExportCSV) {
+        btnExportCSV.addEventListener('click', () => {
+            if (!currentReleasesData || currentReleasesData.length === 0) {
+                showToast('No release data available to export.', 'error');
+                return;
+            }
+            exportToCSV(currentReleasesData);
+        });
+    }
+
     btnRefresh.addEventListener('click', () => fetchReleases(true));
     btnEmptyRetry.addEventListener('click', () => fetchReleases(true));
     
