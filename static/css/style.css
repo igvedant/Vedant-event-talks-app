@@ -833,3 +833,88 @@ header {
 @keyframes slideIn {
     to { transform: translateY(0); opacity: 1; }
 }
+
+/* ==========================================
+   Light Theme Variable Overrides
+   ========================================== */
+body.light-theme {
+    --bg-dark: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.7);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-hover: rgba(15, 23, 42, 0.16);
+    --text-main: #0f172a;
+    --text-muted: #334155;
+    --text-dark: #64748b;
+    --shadow-main: 0 10px 30px rgba(15, 23, 42, 0.05);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.06);
+
+    /* Adjust tag backgrounds for light theme readability */
+    --bg-feature: rgba(16, 185, 129, 0.1);
+    --bg-issue: rgba(245, 158, 11, 0.1);
+    --bg-breaking: rgba(239, 68, 68, 0.1);
+    --bg-announcement: rgba(59, 130, 246, 0.1);
+    --bg-change: rgba(139, 92, 246, 0.1);
+    --bg-default: rgba(107, 114, 128, 0.1);
+}
+
+/* Light mode specific style refinements */
+body.light-theme .bg-glow-1,
+body.light-theme .bg-glow-2 {
+    opacity: 0.06;
+}
+
+body.light-theme .date-dot {
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+body.light-theme .date-text {
+    background: #f1f5f9;
+    color: #0f172a;
+    box-shadow: 0 0 10px #f1f5f9;
+}
+
+body.light-theme .card-content code {
+    background: rgba(15, 23, 42, 0.05);
+    color: #e11d48;
+}
+
+body.light-theme .btn-icon {
+    background: rgba(15, 23, 42, 0.02);
+}
+
+body.light-theme .btn-icon:hover {
+    background: rgba(15, 23, 42, 0.06);
+}
+
+body.light-theme .modal-composer {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+body.light-theme .tweet-textarea {
+    background: rgba(15, 23, 42, 0.02);
+    border-color: rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+}
+
+body.light-theme .btn-secondary {
+    background: rgba(15, 23, 42, 0.03);
+    color: #0f172a;
+}
+
+body.light-theme .btn-secondary:hover {
+    background: rgba(15, 23, 42, 0.07);
+}
+
+body.light-theme .modal-close:hover {
+    background: rgba(15, 23, 42, 0.05);
+}
+
+body.light-theme .toast {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+}
+

@@ -24,6 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSendTweet = document.getElementById('btn-send-tweet');
     const toastContainer = document.getElementById('toast-container');
 
+    // Theme Switcher DOM elements
+    const btnThemeToggle = document.getElementById('btn-theme-toggle');
+    const themeIconMoon = document.getElementById('theme-icon-moon');
+    const themeIconSun = document.getElementById('theme-icon-sun');
+    const themeText = document.getElementById('theme-text');
+
+    // Load theme preference from localStorage on initialization
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        if (themeIconMoon) themeIconMoon.style.display = 'none';
+        if (themeIconSun) themeIconSun.style.display = 'inline-block';
+        if (themeText) themeText.textContent = 'Light Mode';
+    }
+
     let isFetching = false;
     let selectedUpdateData = null;
     let currentReleasesData = null; // Store releases locally for CSV exports
@@ -410,6 +425,27 @@ document.addEventListener('DOMContentLoaded', () => {
     btnRefresh.addEventListener('click', () => fetchReleases(true));
     btnEmptyRetry.addEventListener('click', () => fetchReleases(true));
     
+    // Theme Switcher Click Handler
+    if (btnThemeToggle) {
+        btnThemeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light-theme');
+            
+            if (isLight) {
+                if (themeIconMoon) themeIconMoon.style.display = 'none';
+                if (themeIconSun) themeIconSun.style.display = 'inline-block';
+                if (themeText) themeText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+                showToast('Switched to Light theme!');
+            } else {
+                if (themeIconMoon) themeIconMoon.style.display = 'inline-block';
+                if (themeIconSun) themeIconSun.style.display = 'none';
+                if (themeText) themeText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+                showToast('Switched to Dark theme!');
+            }
+        });
+    }
+
     // Modal controls
     btnCloseModal.addEventListener('click', closeTweetComposer);
     
