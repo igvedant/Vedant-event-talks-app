@@ -1,0 +1,115 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these written to a standalone folder rather than in source
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nosenv/
+.pytest_cache/
+.mypy_cache/
+.yamlcache/
+.hypothesis/
+.nox/
+cov-report.xml
+.coverage
+.coverage.*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+#   For a library or package, you might want to share your .python-version.
+#   For an app, this can be ignored:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case you're running Pipenv in a project that is not an app, you might choose to ignore it:
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipenv, poetry.lock is generally tracked, but can be excluded in some setups:
+#poetry.lock
+
+# pdm
+#   Similar to Poetry and Pipenv, pdm.lock is generally tracked, but can be excluded in some setups:
+#.pdm-plugins/
+#.pdm-pyproject.toml
+
+# PEP 582; project packages directory (used by pdm)
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.nosexy/
+
+# VS Code
+.vscode/
+
+# PyCharm / IntelliJ
+.idea/
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
